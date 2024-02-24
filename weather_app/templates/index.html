@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Weather Information</h2>
+        <form id="weatherForm">
+            <label for="city">Enter City:</label>
+            <input type="text" id="city" name="city">
+            <button type="submit">Get Weather</button>
+        </form>
+        <div id="weatherData">
+            <!-- Weather data will be loaded here -->
+            <p id="temperature">Temperature: </p>
+            <p id="humidity">Humidity: </p>
+            <p id="windSpeed">Wind Speed: </p>
+            <p id="weatherConditions">Weather Conditions: </p>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#weatherForm').submit(function(event) {
+                event.preventDefault();
+                var city = $('#city').val();
+                $.ajax({
+                    url: '/weather/' + city + '/',  // Adjust the URL to match your Django URL pattern
+                    type: 'GET',
+                    success: function(data) {
+                        $('#temperature').text('Temperature: ' + data.temperature + '°C');
+                        $('#humidity').text('Humidity: ' + data.humidity + '%');
+                        $('#windSpeed').text('Wind Speed: ' + data.wind_speed + 'm/s');
+                        $('#weatherConditions').text('Weather Conditions: ' + data.weather_conditions);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

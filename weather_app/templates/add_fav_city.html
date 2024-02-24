@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Favorite City{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Add Favorite City</h2>
+        <form id="addFavoriteForm">
+            <label for="city">Enter City:</label>
+            <input type="text" id="city" name="city">
+            <button type="submit">Add Favorite</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#addFavoriteForm').submit(function(event) {
+                event.preventDefault();
+                var city = $('#city').val();
+                $.ajax({
+                    url: '/add_favorite/',
+                    type: 'POST',
+                    data: {city: city},
+                    success: function(data) {
+                        alert('Favorite city added!');
+                        // Optionally, you can redirect to another page after adding favorite city
+                        // window.location.href = '/';  // Redirect to homepage
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
